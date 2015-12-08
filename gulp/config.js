@@ -6,6 +6,8 @@ var path = {
   font: "./src/app/assets/font"
 };
 
+var webpack = require('webpack');
+
 var watchWebpack = process.env.NODE_ENV === 'production' ? false : true;
 
 module.exports = {
@@ -67,16 +69,32 @@ module.exports = {
     src: __dirname + '/../src/app/app.jsx',
     dest: __dirname + '/../src/build',
     config: {
-      entry: {app: __dirname + '/../src/app/app.jsx'},
+      entry: {
+        app:[
+          'webpack-dev-server/client?http://127.0.0.1:3000', // WebpackDevServer host and port
+          'webpack/hot/only-dev-server',
+          __dirname + '/../src/app/app.jsx'
+        ]
+      },
       watch: watchWebpack,
       output: {
         path: __dirname + '/../src/build',
         publicPath: './',
         filename: 'bundle.js'
       },
+      // Require the webpack and react-hot-loader plugins
+      plugins: [
+        new webpack.HotModuleReplacementPlugin(),
+        new webpack.NoErrorsPlugin()
+      ],
       debug : true,
       module: {
         loaders: [{
+            test: /\.jsx?$/,
+            exclude: /node_modules/,
+            loader: 'react-hot!jsx-loader?harmony'
+          },
+          {
           test: /\.jsx?$/,
           exclude: /node_modules/,
           loader: 'babel-loader'

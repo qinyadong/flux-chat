@@ -1,8 +1,8 @@
 var configs = {
   development: {
-    port: '8080',
+    port: '9999',
     mongo: {
-      url: 'mongodb://localhost/flux-chat'
+      url: 'mongodb://45.127.97.104/flux-chat'
     },
     session: {
       secret: 'devsecretkey!',
